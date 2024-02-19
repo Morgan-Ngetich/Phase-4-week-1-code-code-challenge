@@ -32,7 +32,12 @@ def home():
 @app.route('/heroes', methods=['GET'])
 def get_heroes():
     heroes = Hero.query.all()
-    result = [{'id': hero.id, 'name': hero.name, 'super_name': hero.super_name} for hero in heroes]
+    result = [
+            {'id': hero.id,
+            'name': hero.name,
+            'super_name': hero.super_name
+            } for hero in heroes
+        ]
     return jsonify(result)
 
 # Route to get a specific hero by id
@@ -41,15 +46,32 @@ def get_hero(id):
     hero = Hero.query.get(id)
     if not hero:
         return jsonify({'error': 'Hero not found'}), 404
-    powers = [{'id': power.id, 'name': power.name, 'description': power.description} for power in hero.powers]
-    result = {'id': hero.id, 'name': hero.name, 'super_name': hero.super_name, 'powers': powers}
-    return jsonify(result)
+    powers = [
+            {
+                'id': power.id,
+                'name': power.name,
+                'description': power.description
+            } for power in hero.powers
+        ]
+    result = {
+        'id': hero.id,
+        'name': hero.name,
+        'super_name': hero.super_name,
+        'powers': powers
+        }
+    return result
 
 # Route to get all powers
 @app.route('/powers', methods=['GET'])
 def get_powers():
     powers = Power.query.all()
-    result = [{'id': power.id, 'name': power.name, 'description': power.description} for power in powers]
+    result = [
+            {
+                'id': power.id,
+                'name': power.name,
+                'description': power.description
+            } for power in powers
+        ]
     return jsonify(result)
 
 # Route to get a specific power by id
@@ -58,7 +80,11 @@ def get_power(id):
     power = Power.query.get(id)
     if not power:
         return jsonify({'error': 'Power not found'}), 404
-    result = {'id': power.id, 'name': power.name, 'description': power.description}
+    result = {
+        'id': power.id,
+        'name': power.name,
+        'description': power.description
+        }
     return jsonify(result)
 
 # Route to update a power's description
@@ -71,7 +97,12 @@ def update_power(id):
     try:
         power.description = data['description']
         db.session.commit()
-        return jsonify({'id': power.id, 'name': power.name, 'description': power.description})
+        return jsonify(
+            {
+                'id': power.id,
+                'name': power.name,
+                'description': power.description
+            })
     except KeyError:
         return jsonify({'errors': ['description is required']}), 400
     except ValidationError as e:
@@ -81,16 +112,26 @@ def update_power(id):
 @app.route('/hero_powers', methods=['POST'])
 def create_hero_power():
     data = request.get_json()
-    try:
-        hero_id = data['hero_id']
-        power_id = data['power_id']
-        strength = data['strength']
-    except KeyError:
-        return jsonify({'errors': ['hero_id, power_id, and strength are required']}), 400
+    errors = []
+    if 'hero_id' not in data or not data['hero_id']:
+        errors.append('hero_id is required')
+    if 'power_id' not in data or not data['power_id']:
+        errors.append('power_id is required')
+    if 'strength' not in data or not data['strength']:
+        errors.append('strength is required. NB:// "Weak" & "Strong"')
+    
+    if errors:
+        return jsonify({'errors': errors}), 400
+
+    hero_id = data['hero_id']
+    power_id = data['power_id']
+    strength = data['strength']
+
     hero = Hero.query.get(hero_id)
     power = Power.query.get(power_id)
     if not hero or not power:
         return jsonify({'error': 'Hero or Power not found'}), 404
+    
     try:
         hero_power = HeroPower(hero_id=hero_id, power_id=power_id, strength=strength)
         db.session.add(hero_power)
@@ -98,6 +139,7 @@ def create_hero_power():
         return jsonify(get_hero(hero_id))
     except ValidationError as e:
         return jsonify({'errors': e.messages}), 400
+
 
 # Run the app if this file is executed
 if __name__ == '__main__':

@@ -13,7 +13,10 @@ with app.app_context():
     heroes_data = [
         {'name': 'Superman', 'super_name': 'Clark Kent'},
         {'name': 'Batman', 'super_name': 'Bruce Wayne'},
-        {'name': 'Wonder Woman', 'super_name': 'Diana Prince'}
+        {'name': 'Wonder Woman', 'super_name': 'Diana Prince'},
+        {'name': 'Spider-Man', 'super_name': 'Peter Parker'},
+        {'name': 'Iron Man', 'super_name': 'Tony Stark'},
+        {'name': 'Captain America', 'super_name': 'Steve Rogers'}
     ]
 
     heroes = []
@@ -28,7 +31,10 @@ with app.app_context():
     powers_data = [
         {'name': 'Flight', 'description': 'Ability to fly and soar high in the sky'},
         {'name': 'Super Strength', 'description': 'Ability to exhibit superhuman strength and lift heavy objects'},
-        {'name': 'Invisibility', 'description': 'Ability to become invisible and move unseen'}
+        {'name': 'Invisibility', 'description': 'Ability to become invisible and move unseen'},
+        {'name': 'Wall-Crawling', 'description': 'Ability to climb walls and ceilings'},
+        {'name': 'Arc Reactor', 'description': 'Energy source for advanced technology'},
+        {'name': 'Super Soldier Serum', 'description': 'Enhanced strength, agility, and endurance'}
     ]
 
 
@@ -46,7 +52,13 @@ with app.app_context():
         {'hero_id': 1, 'power_id': 2, 'strength': 'Strong'},
         {'hero_id': 2, 'power_id': 2, 'strength': 'Average'},
         {'hero_id': 3, 'power_id': 1, 'strength': 'Average'},
-        {'hero_id': 3, 'power_id': 3, 'strength': 'Weak'}
+        {'hero_id': 3, 'power_id': 3, 'strength': 'Weak'},
+        {'hero_id': 4, 'power_id': 1, 'strength': 'Strong'},
+        {'hero_id': 4, 'power_id': 2, 'strength': 'Strong'},
+        {'hero_id': 5, 'power_id': 2, 'strength': 'Average'},
+        {'hero_id': 5, 'power_id': 3, 'strength': 'Average'},
+        {'hero_id': 6, 'power_id': 1, 'strength': 'Weak'}
+        
     ]
 
     hero_powers = []
